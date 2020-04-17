@@ -14,4 +14,4 @@
     ```
 2. 開啟命令提示字元，輸入 `npx serve .`
 3. 開啟 `http://localhost:5000`
-4. 選擇 `index.html` 執行
+4. 選擇 `./index.html` 執行
