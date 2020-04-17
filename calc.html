@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="materialize/css/materialize.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <title>心算</title>
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="nav-extended teal">
+    <div class="nav-wrapper">
+      <a href="home.html" class="brand-logo">Home</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
+        <li><a id="btn-download">結束</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="home.html">首頁</a></li>
+        <li class="tab"><a href="color.html">顏色</a></li>
+        <li class="tab"><a href="calc.html">心算</a></li>
+        <li class="tab"><a href="rest.html">休息</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- content -->
+  <div class="container">
+    <!-- startBlock -->
+    <div id="startBlock" style="display: block;">
+      <div class="row">
+        <div class="col" style="width: 100%;">
+          <div class="card">
+            <div class="card-content center-align">
+              <h3 id="h3-show"></h3>
+              <button id="btn-start" class="waves-effect waves-light btn-large">開始</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- questionBlock -->
+    <div id="questionBlock" style="display: none;">
+      <div class="row">
+        <div class="col center-align" style="width: 100%">
+          <div class="progress">
+            <div id="div-countdown" class="determinate" style="width: 100%"></div>
+          </div>
+          <h3 id="qTime"></h3>
+        </div>
+        <div class="col" style="width: 100%;">
+          <div class="card-panel grey lighten-3 center-align">
+            <div id="div-question" class="input-field inline"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- resultBlock -->
+    <div id="resultBlock" style="display: none;">
+      <div class="row">
+        <div class="col" style="width: 100%;">
+          <div class="card">
+            <div class="card-content">
+              <h1 class="card-title">成績</h1>
+              <h2 class="center-align" id="result"></h2>
+            </div>
+            <div class="card-action">
+              <a href="home.html">首頁</a>
+              <a href="color.html">顏色</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Black Modal Structure -->
+  <div id="modal-black" class="modal black">
+    <div class="modal-content"></div>
+  </div>
+
+  <!--Rregister Modal Structure -->
+  <div id="modal-register" class="modal">
+    <div class="modal-content">
+      <h4>註冊</h4>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="input-name" type="text" class="validate" required />
+          <label for="input-name">姓名</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="waves-effect waves-green btn btn-flat" onclick="register()">
+          送出
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="materialize/js/materialize.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    // https://rankyourbrain.com/mental-math
+    const TOTAL_TIME = 30; // 總時間(s)
+    const QUESTION_TIME = 5; // 每題時間(s)
+    var Q;
+    var CURRENT_QUESTION_NUM = 0;
+    var TOTAL_QUESTION // 總題數
+    loadJSON('calc.json', function (response) {
+      let actual_JSON = JSON.parse(response);
+      Q = actual_JSON[0].Q;
+    });
+
+    init("calc");
+
+    //------------------------顯示題目------------------------
+    function show() {
+      CURRENT_QUESTION_NUM = getRandom(0, Q.length - 1);
+      let question = Q[CURRENT_QUESTION_NUM].split(",")[0];
+      document.getElementById("div-question").innerHTML = `
+        <span class="calc-question">${question}</span>
+        <input type="number" id="input-ans" />
+      `;
+
+      let el_inputAns = document.getElementById("input-ans");
+      el_inputAns.focus();
+
+      // 按 Enter 送出
+      el_inputAns.addEventListener("keypress", function (e) {
+        let key = e.which || e.keyCode;
+        if (key === 13) {
+          submitAns(e.srcElement.value);
+        }
+      });
+    }
+
+    //------------------------點擊答案，計算分數並顯示新題目------------------------
+    function submitAns(input_ans) {
+      score(
+        parseInt(input_ans),
+        parseInt(Q[CURRENT_QUESTION_NUM].split(",")[1]),
+      );
+
+      document.getElementById("qTime").innerHTML = QUESTION_TIME;
+      show();
+    }
+  </script>
+</body>
+
+</html>

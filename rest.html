@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="materialize/css/materialize.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <title>休息</title>
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="nav-extended teal">
+    <div class="nav-wrapper">
+      <a href="home.html" class="brand-logo">Home</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
+        <li><a id="btn-download">結束</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="home.html">首頁</a></li>
+        <li class="tab"><a href="color.html">顏色</a></li>
+        <li class="tab"><a href="calc.html">心算</a></li>
+        <li class="tab"><a href="rest.html">休息</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- content -->
+  <div class="container">
+    <!-- startBlock -->
+    <div id="startBlock" style="display: block;">
+      <div class="row">
+        <div class="col" style="width: 100%;">
+          <div class="card">
+            <div class="card-content center-align">
+              <h3 id="h3-show"></h3>
+              <button id="btn-start" class="waves-effect waves-light btn-large" onclick="rest()">開始</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Black Modal Structure -->
+    <div id="modal-black" class="modal black">
+      <div class="modal-content"></div>
+    </div>
+
+    <!-- Rest Modal Structure -->
+    <div id="modal-rest" class="modal black">
+      <div class="modal-content center-align" style="padding-top: 40vh;">
+        <h1 class="blue-text">休息一下</h1>
+      </div>
+    </div>
+
+
+    <script src="materialize/js/materialize.min.js"></script>
+    <script src="main.js"></script>
+    <script>
+      showH3();
+      function rest() {
+        restModalInstance.open();
+        setTimeout(function () {
+          restModalInstance.close();
+          blackModalInstance.open();
+          setTimeout(function () {
+            // 前往下一題
+            let current_sequence = addLocalStorage("CURRENT_SEQUENCE");
+            let execFunc = SEQUENCE[current_sequence];
+            execFunc();
+          }, 20000);
+        }, 30000);
+      }
+    </script>
+</body>
+
+</html>

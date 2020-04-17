@@ -1,0 +1,26 @@
+* {
+  font-family: "微軟正黑體", "Courier New", Courier, monospace !important;
+}
+
+.btn-large {
+  font-size: 3rem;
+  height: 5rem;
+  width: 12vw;
+}
+
+#startBlock .card-content {
+  height: 70vh;
+  padding-top: 15vh;
+}
+
+#color-question {
+  font-size: 10rem;
+}
+
+.calc-question {
+  font-size: 4.2rem;
+}
+
+.card-panel {
+  padding: 0px;
+}

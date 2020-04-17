@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="materialize/css/materialize.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <title>顏色</title>
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="nav-extended teal">
+    <div class="nav-wrapper">
+      <a href="home.html" class="brand-logo">Home</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
+        <li><a id="btn-download">結束</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="home.html">首頁</a></li>
+        <li class="tab"><a href="color.html">顏色</a></li>
+        <li class="tab"><a href="calc.html">心算</a></li>
+        <li class="tab"><a href="rest.html">休息</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- content -->
+  <div class="container">
+    <!-- startBlock -->
+    <div id="startBlock" style="display: block;">
+      <div class="row">
+        <div class="col" style="width: 100%;">
+          <div class="card">
+            <div class="card-content center-align">
+              <h3 id="h3-show"></h3>
+              <button id="btn-start" class="waves-effect waves-light btn-large">開始</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- questionBlock -->
+    <div id="questionBlock" style="display: none;">
+      <div class="row">
+        <div class="col center-align" style="width: 100%">
+          <div class="progress">
+            <div id="div-countdown" class="determinate" style="width: 100%"></div>
+          </div>
+          <h3 id="qTime"></h3>
+        </div>
+        <div class="col" style="width: 100%;">
+          <div id="div-question" class="card-panel grey lighten-3 center-align"></div>
+        </div>
+        <div class="col m3 center-align">
+          <button class="btn waves-effect waves-light btn-large" type="button" name="action" onclick="submitAns('red')">
+            紅
+          </button>
+        </div>
+        <div class="col m3 center-align">
+          <button class="btn waves-effect waves-light btn-large" type="button" name="action"
+            onclick="submitAns('blue')">
+            藍
+          </button>
+        </div>
+        <div class="col m3 center-align">
+          <button class="btn waves-effect waves-light btn-large" type="button" name="action"
+            onclick="submitAns('green')">
+            綠
+          </button>
+        </div>
+        <div class="col m3 center-align">
+          <button class="btn waves-effect waves-light btn-large" type="button" name="action"
+            onclick="submitAns('amber')">
+            黃
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- resultBlock -->
+    <div id="resultBlock" style="display: none;">
+      <div class="row">
+        <div class="col" style="width: 100%;">
+          <div class="card">
+            <div class="card-content">
+              <h1 class="card-title">成績</h1>
+              <h2 class="center-align" id="result"></h2>
+            </div>
+            <div class="card-action">
+              <a href="home.html">首頁</a>
+              <a href="calc.html">心算</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Black Modal Structure -->
+  <div id="modal-black" class="modal black">
+    <div class="modal-content"></div>
+  </div>
+
+  <!-- Register Modal Structure -->
+  <div id="modal-register" class="modal">
+    <div class="modal-content">
+      <h4>註冊</h4>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="input-name" type="text" class="validate" required />
+          <label for="input-name">姓名</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="waves-effect waves-green btn btn-flat" onclick="register()">
+          送出
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="materialize/js/materialize.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    const TOTAL_TIME = 30; // 總時間(s)
+    const QUESTION_TIME = 3; // 每題時間(s)
+    var WORD = ["紅", "藍", "綠", "黃"];
+    var COLOR = ["blue", "amber", "red", "green"];
+    var CURRENT_QUESTION_NUM = 0;
+
+    init("color");
+
+    //------------------------顯示題目------------------------
+    var COLOR_PREV = "";
+    var WORD_PREV = "";
+
+    function getQuestion() {
+      let color, word;
+      color_num = getRandom(0, 3);
+      word_num = getRandom(0, 3);
+      if (COLOR_PREV == COLOR[color_num]) {
+        if (color_num % 2 == 0) {
+          color_num += getRandom(1, 2);
+          color_num = (color_num > 3) ? 0 : color_num;
+        } else {
+          color_num -= getRandom(1, 2);
+          color_num = (color_num < 0) ? 3 : color_num;
+        }
+      }
+      if (WORD_PREV == WORD[word_num]) {
+        if (word_num % 2 == 0) {
+          word_num -= getRandom(1, 2);
+          word_num = (word_num < 0) ? 3 : word_num;
+        } else {
+          word_num += getRandom(1, 2);
+          word_num = (word_num > 3) ? 0 : word_num;
+        }
+      }
+      COLOR_PREV = COLOR[color_num];
+      WORD_PREV = WORD[word_num];
+      CURRENT_QUESTION_NUM = color_num;
+      return [COLOR[color_num], WORD[word_num]];
+    }
+
+    function show() {
+      let [color, word] = getQuestion();
+      document.getElementById("div-question").innerHTML = `
+        <span id="color-question" class="${color}-text">
+          ${word}
+        </span>
+      `;
+    }
+
+    //------------------------點擊答案，計算分數並顯示新題目------------------------
+    function submitAns(x) {
+      score(x, COLOR[CURRENT_QUESTION_NUM]);
+      document.getElementById("qTime").innerHTML = QUESTION_TIME;
+      show();
+    }
+  </script>
+</body>
+
+</html>
