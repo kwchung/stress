@@ -1,12 +1,12 @@
-let goCalc = function() {
+let goCalc = function () {
   window.location.href = "/calc.html";
 };
 
-let goColor = function() {
+let goColor = function () {
   window.location.href = "/color.html";
 };
 
-let goSaveUser = function() {
+let goSaveUser = function () {
   let savedUser = localStorage.getItem("savedUser");
   if (savedUser === null) {
     savedUser = [];
@@ -21,10 +21,10 @@ let goSaveUser = function() {
   localStorage.setItem("CURRENT_SEQUENCE", -1);
   localStorage.setItem("currentUser", JSON.stringify({}));
   alert("測驗結束！");
-  window.location.href = "/home.html";
+  window.location.href = "/index.html";
 };
 
-let goRest = function() {
+let goRest = function () {
   window.location.href = "/rest.html";
 };
 
@@ -51,7 +51,7 @@ function loadJSON(file, callback) {
   let xobj = new XMLHttpRequest();
   xobj.overrideMimeType("application/json");
   xobj.open("GET", file, true);
-  xobj.onreadystatechange = function() {
+  xobj.onreadystatechange = function () {
     if (xobj.readyState == 4 && xobj.status == "200") {
       callback(xobj.responseText);
     }
@@ -65,7 +65,7 @@ function getRandom(min, max) {
 
 var registerModalInstance, blackModalInstance, restModalInstance;
 // ---------------彈出視窗(Modal)---------------
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   let registerModal = document.getElementById("modal-register");
   let blackModal = document.getElementById("modal-black");
   let restModal = document.getElementById("modal-rest");
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 let el_inputName = document.getElementById("input-name");
-el_inputName.addEventListener("keypress", function(e) {
+el_inputName.addEventListener("keypress", function (e) {
   let key = e.which || e.keyCode;
   if (key === 13) {
     register();
@@ -94,7 +94,7 @@ function register() {
       JSON.stringify({
         name: el_inputName.value,
         scores: [],
-        testTime: new Date().toLocaleString()
+        testTime: new Date().toLocaleString(),
       })
     );
     let current_sequence = 0;
@@ -117,7 +117,7 @@ function init(type) {
     // do nothing...
   }
   document.getElementById("qTime").innerHTML = QUESTION_TIME;
-  document.getElementById("btn-start").addEventListener("click", function() {
+  document.getElementById("btn-start").addEventListener("click", function () {
     start(type);
     show();
   });
@@ -154,7 +154,7 @@ function start(type) {
 function myCountdown(type) {
   //------------------------總時間---------------------
   let countdown = TOTAL_TIME;
-  let totalInterval = setInterval(function() {
+  let totalInterval = setInterval(function () {
     countdown = totalTimer(countdown);
     if (countdown == 0) {
       clearInterval(totalInterval);
@@ -164,7 +164,7 @@ function myCountdown(type) {
   }, 1000);
 
   //------------------------每題時間---------------------
-  let qInterval = setInterval(function() {
+  let qInterval = setInterval(function () {
     qTimer();
   }, 1000);
 }
@@ -210,7 +210,7 @@ function finish(type) {
 
   if (localStorage.getItem("currentUser") !== null) {
     // 開啟、關閉黑屏
-    setTimeout(function() {
+    setTimeout(function () {
       blackModalInstance.open();
       // 儲存成績
       let currentUser = localStorage.getItem("currentUser");
@@ -219,12 +219,12 @@ function finish(type) {
         type: type,
         trueScore: trueScore,
         falseScore: falseScore,
-        endTime: new Date().toLocaleString()
+        endTime: new Date().toLocaleString(),
       });
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
     }, 1000);
 
-    setTimeout(function() {
+    setTimeout(function () {
       // 前往下一題
       let current_sequence = addLocalStorage("CURRENT_SEQUENCE");
       let execFunc = SEQUENCE[current_sequence];
@@ -249,7 +249,7 @@ function score(x, y) {
 }
 
 // ---------------下載測驗結果---------------
-document.getElementById("btn-download").addEventListener("click", function() {
+document.getElementById("btn-download").addEventListener("click", function () {
   if (localStorage.getItem("savedUser") === null) {
     alert("測驗尚未完成！");
     return false;
@@ -257,7 +257,7 @@ document.getElementById("btn-download").addEventListener("click", function() {
   // 取出目前使用者成績
   let savedUser = localStorage.getItem("savedUser");
   // 取出歷史紀錄
-  loadJSON("rank.json", function(response) {
+  loadJSON("rank.json", function (response) {
     let data = JSON.parse(response);
 
     // 將目前使用者成績加入歷史紀錄
