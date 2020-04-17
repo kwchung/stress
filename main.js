@@ -1,9 +1,9 @@
 let goCalc = function () {
-  window.location.href = "/calc.html";
+  window.location.href = "calc.html";
 };
 
 let goColor = function () {
-  window.location.href = "/color.html";
+  window.location.href = "color.html";
 };
 
 let goSaveUser = function () {
@@ -21,11 +21,11 @@ let goSaveUser = function () {
   localStorage.setItem("CURRENT_SEQUENCE", -1);
   localStorage.setItem("currentUser", JSON.stringify({}));
   alert("測驗結束！");
-  window.location.href = "/index.html";
+  window.location.href = "index.html";
 };
 
 let goRest = function () {
-  window.location.href = "/rest.html";
+  window.location.href = "rest.html";
 };
 
 // 執行順序
