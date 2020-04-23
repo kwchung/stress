@@ -37,3 +37,4 @@
 ![休息測驗](assets/stress_rest.png)
 
 完成所有測試後再點選右上角「結束」按鈕會下載本次測驗所有受測者的成績。
+![結束](assets/stress_end.png)
