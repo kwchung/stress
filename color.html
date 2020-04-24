@@ -8,25 +8,27 @@
   <link rel="stylesheet" href="materialize/css/materialize.min.css" />
   <link rel="stylesheet" href="style.css" />
 
-  <title>顏色</title>
+  <title>壓力測驗</title>
 </head>
 
 <body>
   <!-- navbar -->
   <nav class="nav-extended teal">
     <div class="nav-wrapper">
-      <a href="./index.html" class="brand-logo">Home</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
-        <li><a id="btn-download">結束</a></li>
+      <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
+      <ul class="left">
+        <li class="active"><a href="./index-stress.html">壓力測驗</a></li>
+        <li><a href="./index-stroop.html">Stroop</a></li>
       </ul>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
-        <li class="tab"><a href="./index.html">首頁</a></li>
+        <li class="tab"><a href="./index-stress.html">計分板</a></li>
         <li class="tab"><a href="./color.html">顏色</a></li>
         <li class="tab"><a href="./calc.html">心算</a></li>
-        <li class="tab"><a href="rest.html">休息</a></li>
+        <li class="tab right"><a id="btn-download">結束</a></li>
+        <li class="tab right"><a href="./setting-stress.html">設定</a></li>
+        <li class="tab right"><a href="#modal-register" class="modal-trigger">註冊</a></li>
       </ul>
     </div>
   </nav>
@@ -59,24 +61,24 @@
         <div class="col" style="width: 100%;">
           <div id="div-question" class="card-panel grey lighten-3 center-align"></div>
         </div>
-        <div class="col m3 center-align">
+        <div class="col s3 center-align">
           <button class="btn waves-effect waves-light btn-large" type="button" name="action" onclick="submitAns('red')">
             紅
           </button>
         </div>
-        <div class="col m3 center-align">
+        <div class="col s3 center-align">
           <button class="btn waves-effect waves-light btn-large" type="button" name="action"
             onclick="submitAns('blue')">
             藍
           </button>
         </div>
-        <div class="col m3 center-align">
+        <div class="col s3 center-align">
           <button class="btn waves-effect waves-light btn-large" type="button" name="action"
             onclick="submitAns('green')">
             綠
           </button>
         </div>
-        <div class="col m3 center-align">
+        <div class="col s3 center-align">
           <button class="btn waves-effect waves-light btn-large" type="button" name="action"
             onclick="submitAns('amber')">
             黃
@@ -129,9 +131,10 @@
 
   <script src="materialize/js/materialize.min.js"></script>
   <script src="main.js"></script>
+  <script src="stress.js"></script>
   <script>
-    const TOTAL_TIME = 30; // 總時間(s)
-    const QUESTION_TIME = 3; // 每題時間(s)
+    const TOTAL_TIME = localStorage.getItem("STRESS_COLOR_TOTAL_TIME"); // 總時間(s)
+    const QUESTION_TIME = localStorage.getItem("STRESS_COLOR_QUESTION_TIME"); // 每題時間(s)
     var WORD = ["紅", "藍", "綠", "黃"];
     var COLOR = ["red", "blue", "green", "amber"];
     var CURRENT_QUESTION_NUM = 0;
@@ -142,36 +145,20 @@
     var COLOR_PREV = "";
     var WORD_PREV = "";
 
-    function getQuestion() {
-      let color, word;
-      color_num = getRandom(0, 3);
-      word_num = getRandom(0, 3);
-      if (COLOR_PREV == COLOR[color_num]) {
-        if (color_num % 2 == 0) {
-          color_num += getRandom(1, 2);
-          color_num = (color_num > 3) ? 0 : color_num;
-        } else {
-          color_num -= getRandom(1, 2);
-          color_num = (color_num < 0) ? 3 : color_num;
+    function show() {
+      while (true) {
+        [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
+        if (COLOR_PREV != COLOR[color_num] && WORD_PREV != WORD[word_num]) {
+          break;
         }
       }
-      if (WORD_PREV == WORD[word_num]) {
-        if (word_num % 2 == 0) {
-          word_num -= getRandom(1, 2);
-          word_num = (word_num < 0) ? 3 : word_num;
-        } else {
-          word_num += getRandom(1, 2);
-          word_num = (word_num > 3) ? 0 : word_num;
-        }
-      }
+
       COLOR_PREV = COLOR[color_num];
       WORD_PREV = WORD[word_num];
       CURRENT_QUESTION_NUM = color_num;
-      return [COLOR[color_num], WORD[word_num]];
-    }
+      color = COLOR[color_num];
+      word = WORD[word_num];
 
-    function show() {
-      let [color, word] = getQuestion();
       document.getElementById("div-question").innerHTML = `
         <span id="color-question" class="${color}-text">
           ${word}

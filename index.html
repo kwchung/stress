@@ -15,19 +15,10 @@
   <!-- navbar -->
   <nav class="nav-extended teal">
     <div class="nav-wrapper">
-      <a href="./index.html" class="brand-logo">Home</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
-        <li><a id="btn-download">結束</a></li>
-      </ul>
-    </div>
-    <div class="nav-content">
-      <ul class="tabs tabs-transparent">
-        <li class="tab"><a href="./index.html">首頁</a></li>
-        <li class="tab"><a href="./color.html">顏色</a></li>
-        <li class="tab"><a href="./calc.html">心算</a></li>
-        <li class="tab"><a href="./stroop.html">Stroop</a></li>
-        <li class="tab"><a href="rest.html">休息</a></li>
+      <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
+      <ul class="left">
+        <li><a href="./index-stress.html">壓力測驗</a></li>
+        <li><a href="./index-stroop.html">Stroop</a></li>
       </ul>
     </div>
   </nav>
@@ -36,67 +27,19 @@
   <div class="container">
     <div class="row">
       <div class="col" style="width: 100%;">
-        <div class="card">
-          <div class="card-content center-align">
-            <table class="striped centered">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>姓名</th>
-                  <th>測驗1</th>
-                  <th>測驗2</th>
-                  <th>測驗3</th>
-                  <th>測驗4</th>
-                  <th>時間</th>
-                </tr>
-              </thead>
-              <tbody id="tbody-rank"></tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 
-  <!-- Register Modal Structure -->
-  <div id="modal-register" class="modal">
-    <div class="modal-content">
-      <h4>註冊</h4>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="input-name" type="text" class="validate" required />
-          <label for="input-name">姓名</label>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="waves-effect waves-green btn btn-flat" onclick="register()">
-          送出
-        </button>
-      </div>
-    </div>
-  </div>
-
-
-  <script src="materialize/js/materialize.min.js"></script>
-  <script src="main.js"></script>
   <script>
     localStorage.setItem("CURRENT_SEQUENCE", -1);
-    // ---------------顯示歷史測驗紀錄---------------
-    loadJSON("rank.json", function (response) {
-      var actual_JSON = JSON.parse(response);
-      var TR = "";
-      actual_JSON.forEach((user, index, arr) => {
-        TR += `<tr>
-                  <td>${index + 1}</td>
-                  <td>${user.name}</td>`;
-        user.scores.forEach(score => {
-          TR += `<td>${score.trueScore} / ${score.trueScore + score.falseScore}</td>`;
-        });
-        TR += `<td>${user.testTime}</td></tr>`;
-      });
-      document.getElementById("tbody-rank").innerHTML = TR;
-    });
-
+    localStorage.setItem("STROOP_TOTAL_QUESTION_NUM", 20);
+    localStorage.setItem("STRESS_COLOR_TOTAL_TIME", 30);
+    localStorage.setItem("STRESS_COLOR_QUESTION_TIME", 3);
+    localStorage.setItem("STRESS_CALC_TOTAL_TIME", 30);
+    localStorage.setItem("STRESS_CALC_QUESTION_TIME", 5);
+    localStorage.setItem("STRESS_REST_TIME", 30);
+    localStorage.setItem("STRESS_STOP_TIME", 20);
   </script>
 </body>
 

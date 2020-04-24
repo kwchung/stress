@@ -1,3 +1,54 @@
+var START_TIME = 0;
+var WORD = ["紅", "藍", "綠", "黃"];
+var WORD2 = ["騿", "宸", "教", "曜"];
+var COLOR = ["red", "blue", "green", "amber"];
+var CURRENT_QUESTION_NUM = 0;
+var STROOP_TOTAL_QUESTION_NUM = localStorage.getItem(
+  "STROOP_TOTAL_QUESTION_NUM"
+);
+
+var registerModalInstance;
+// ---------------彈出視窗(Modal)---------------
+document.addEventListener("DOMContentLoaded", function () {
+  let registerModal = document.getElementById("modal-register");
+  registerModalInstance = M.Modal.init(registerModal, { opacity: 0.5 });
+});
+
+let el_inputName = document.getElementById("input-name");
+el_inputName.addEventListener("keypress", function (e) {
+  let key = e.which || e.keyCode;
+  if (key === 13) {
+    register();
+  }
+});
+
+function setCurrentMode(mode) {
+  localStorage.setItem("CURRENT_MODE", mode);
+  window.location.href = "./stroop.html";
+  // window.location.replace("./stroop.html");
+}
+
+function showH3() {
+  let CURRENT_SEQUENCE = parseInt(localStorage.getItem("CURRENT_SEQUENCE"));
+  let content = "";
+  if (CURRENT_SEQUENCE == -1) {
+    content = "練習";
+  } else {
+    switch (parseInt(localStorage.getItem("CURRENT_MODE"))) {
+      case 1:
+        content = "模式一";
+        break;
+      case 2:
+        content = "模式二";
+        break;
+      case 3:
+        content = "模式三";
+        break;
+    }
+  }
+  document.getElementById("h3-show").innerHTML = content;
+}
+
 /**
  * 初始化
  * @param 畫面名稱 type
@@ -10,28 +61,28 @@ function init(type) {
     // do nothing...
   }
 
-  document
-    .getElementById("btn-start-mode1")
-    .addEventListener("click", function () {
-      CURRENT_MODDE = 1;
-      start(type);
-      show();
-    });
-  document
-    .getElementById("btn-start-mode2")
-    .addEventListener("click", function () {
-      CURRENT_MODDE = 2;
-      start(type);
-      show();
-    });
-  document
-    .getElementById("btn-start-mode3")
-    .addEventListener("click", function () {
-      CURRENT_MODDE = 3;
-      start(type);
-      show();
-    });
+  document.getElementById("btn-start").addEventListener("click", function () {
+    start(type);
+    show();
+  });
   showH3();
+}
+
+function goSaveUser() {
+  let savedUser = localStorage.getItem("savedUser");
+  if (savedUser === null) {
+    savedUser = [];
+  } else {
+    savedUser = JSON.parse(savedUser);
+  }
+  let currentUser = localStorage.getItem("currentUser");
+  currentUser = JSON.parse(currentUser);
+  savedUser.push(currentUser);
+  console.log(savedUser);
+  localStorage.setItem("savedUser", JSON.stringify(savedUser));
+  localStorage.setItem("CURRENT_SEQUENCE", -1);
+  localStorage.setItem("currentUser", JSON.stringify({}));
+  window.location.href = "./index-stroop.html";
 }
 
 /**
@@ -55,8 +106,8 @@ var falseScore = 0;
 function score(x, y) {
   if (x == y) {
     trueScore += 1;
-    TOTAL_QUESTION_NUM -= 1;
-    if (TOTAL_QUESTION_NUM) {
+    STROOP_TOTAL_QUESTION_NUM -= 1;
+    if (STROOP_TOTAL_QUESTION_NUM) {
       show();
     } else {
       finish("stroop");
@@ -86,7 +137,7 @@ function finish(type) {
     let currentUser = localStorage.getItem("currentUser");
     currentUser = JSON.parse(currentUser);
     currentUser.scores.push({
-      mode: CURRENT_MODDE,
+      mode: localStorage.getItem("CURRENT_MODE"),
       type: type,
       trueScore: trueScore,
       falseScore: falseScore,
@@ -116,4 +167,100 @@ function register() {
     localStorage.setItem("CURRENT_SEQUENCE", current_sequence);
     registerModalInstance.close();
   }
+}
+
+//------------------------顯示題目------------------------
+var COLOR_PREV = "";
+var WORD_PREV = "";
+var WORD2_PREV = "";
+
+function getMode1Question() {
+  while (true) {
+    [q_num] = getRandomNumbers([0, 1, 2, 3], 1);
+    if (COLOR_PREV != COLOR[q_num] && WORD_PREV != WORD[q_num]) {
+      break;
+    }
+  }
+
+  COLOR_PREV = COLOR[q_num];
+  WORD_PREV = WORD[q_num];
+  CURRENT_QUESTION_NUM = q_num;
+  return [COLOR[q_num], WORD[q_num]];
+}
+
+function getMode2Question() {
+  while (true) {
+    [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
+    if (COLOR_PREV != COLOR[color_num] && WORD_PREV != WORD[word_num]) {
+      break;
+    }
+  }
+
+  COLOR_PREV = COLOR[color_num];
+  WORD_PREV = WORD[word_num];
+  CURRENT_QUESTION_NUM = color_num;
+  return [COLOR[color_num], WORD[word_num]];
+}
+
+function getMode3Question() {
+  while (true) {
+    [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
+    if (COLOR_PREV != COLOR[color_num] && WORD2_PREV != WORD2[word_num]) {
+      break;
+    }
+  }
+
+  COLOR_PREV = COLOR[color_num];
+  WORD_PREV = WORD2[word_num];
+  CURRENT_QUESTION_NUM = color_num;
+  return [COLOR[color_num], WORD2[word_num]];
+}
+
+function show() {
+  let [color, word] = [];
+  switch (parseInt(localStorage.getItem("CURRENT_MODE"))) {
+    case 1:
+      [color, word] = getMode1Question();
+      break;
+    case 2:
+      [color, word] = getMode2Question();
+      break;
+    case 3:
+      [color, word] = getMode3Question();
+      break;
+  }
+
+  document.getElementById("div-question").innerHTML = `
+    <span id="color-question" class="${color}-text">
+      ${word}
+    </span>
+  `;
+}
+
+//------------------------點擊答案，計算分數並顯示新題目------------------------
+function submitAns(x) {
+  score(x, COLOR[CURRENT_QUESTION_NUM]);
+}
+
+// ---------------下載測驗結果---------------
+document.getElementById("btn-download").addEventListener("click", function () {
+  goSaveUser();
+  download();
+});
+
+let el_STROOP_TOTAL_QUESTION_NUM = document.getElementById(
+  "STROOP_TOTAL_QUESTION_NUM"
+);
+function loadSetting() {
+  el_STROOP_TOTAL_QUESTION_NUM.value = localStorage.getItem(
+    "STROOP_TOTAL_QUESTION_NUM"
+  );
+}
+
+function saveSetting() {
+  localStorage.setItem(
+    "STROOP_TOTAL_QUESTION_NUM",
+    el_STROOP_TOTAL_QUESTION_NUM.value
+  );
+  window.location.href = "./index-stroop.html";
 }

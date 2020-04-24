@@ -62,6 +62,7 @@
 
     <script src="materialize/js/materialize.min.js"></script>
     <script src="main.js"></script>
+    <script src="stress.js"></script>
     <script>
       showH3();
       function rest() {
@@ -74,8 +75,8 @@
             let current_sequence = addLocalStorage("CURRENT_SEQUENCE");
             let execFunc = SEQUENCE[current_sequence];
             execFunc();
-          }, 20000);
-        }, 30000);
+          }, parseInt(localStorage.getItem("STRESS_STOP_TIME")) * 1000);
+        }, parseInt(localStorage.getItem("STRESS_REST_TIME")) * 1000);
       }
     </script>
 </body>

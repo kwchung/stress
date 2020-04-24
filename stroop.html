@@ -15,19 +15,21 @@
     <!-- navbar -->
     <nav class="nav-extended teal">
         <div class="nav-wrapper">
-            <a href="./index.html" class="brand-logo">Home</a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
-                <li><a id="btn-download">結束</a></li>
+            <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
+            <ul class="left">
+                <li><a href="./index-stress.html">壓力測驗</a></li>
+                <li class="active"><a href="./index-stroop.html">Stroop</a></li>
             </ul>
         </div>
         <div class="nav-content">
             <ul class="tabs tabs-transparent">
-                <li class="tab"><a href="./index.html">首頁</a></li>
-                <li class="tab"><a href="./color.html">顏色</a></li>
-                <li class="tab"><a href="./calc.html">心算</a></li>
-                <li class="tab"><a href="./stroop.html">Stroop</a></li>
-                <li class="tab"><a href="rest.html">休息</a></li>
+                <li class="tab"><a href="./index-stroop.html">計分板</a></li>
+                <li class="tab"><a onclick="setCurrentMode(1)">模式一</a></li>
+                <li class="tab"><a onclick="setCurrentMode(2)">模式二</a></li>
+                <li class="tab"><a onclick="setCurrentMode(3)">模式三</a></li>
+                <li class="tab right"><a id="btn-download">結束</a></li>
+                <li class="tab right"><a href="./setting-stroop.html">設定</a></li>
+                <li class="tab right"><a href="#modal-register" class="modal-trigger">註冊</a></li>
             </ul>
         </div>
     </nav>
@@ -41,9 +43,7 @@
                     <div class="card">
                         <div class="card-content center-align">
                             <h3 id="h3-show"></h3>
-                            <button id="btn-start-mode1" class="waves-effect waves-light btn-large">模式一</button>
-                            <button id="btn-start-mode2" class="waves-effect waves-light btn-large">模式二</button>
-                            <button id="btn-start-mode3" class="waves-effect waves-light btn-large">模式三</button>
+                            <button id="btn-start" class="waves-effect waves-light btn-large">開始</button>
                         </div>
                     </div>
                 </div>
@@ -108,11 +108,6 @@
         </div>
     </div>
 
-    <!-- Black Modal Structure -->
-    <div id="modal-black" class="modal black">
-        <div class="modal-content"></div>
-    </div>
-
     <!-- Register Modal Structure -->
     <div id="modal-register" class="modal">
         <div class="modal-content">
@@ -135,113 +130,7 @@
     <script src="main.js"></script>
     <script src="stroop.js"></script>
     <script>
-        var START_TIME = 0;
-        var TOTAL_QUESTION_NUM = 10; // 總題數
-        var WORD = ["紅", "藍", "綠", "黃"];
-        var WORD2 = ["騿", "宸", "教", "曜"];
-        var COLOR = ["red", "blue", "green", "amber"];
-        var CURRENT_QUESTION_NUM = 0;
-        var CURRENT_MODDE = 1;
-
         init("stroop");
-
-        //------------------------顯示題目------------------------
-        var COLOR_PREV = "";
-        var WORD_PREV = "";
-
-        function getMode1Question() {
-            q_num = getRandomNumbers([0, 1, 2, 3], 1)[0];
-            if (COLOR_PREV == COLOR[q_num]) {
-                if (q_num % 2 == 0) {
-                    q_num += getRandom(1, 2);
-                    q_num = (q_num > 3) ? 0 : q_num;
-                } else {
-                    q_num -= getRandom(1, 2);
-                    q_num = (q_num < 0) ? 3 : q_num;
-                }
-            }
-            COLOR_PREV = COLOR[q_num];
-            WORD_PREV = WORD[q_num];
-            CURRENT_QUESTION_NUM = q_num;
-            return [COLOR[q_num], WORD[q_num]];
-        }
-
-        function getMode2Question() {
-            [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
-            if (COLOR_PREV == COLOR[color_num]) {
-                if (color_num % 2 == 0) {
-                    color_num += getRandom(1, 2);
-                    color_num = (color_num > 3) ? 0 : color_num;
-                } else {
-                    color_num -= getRandom(1, 2);
-                    color_num = (color_num < 0) ? 3 : color_num;
-                }
-            }
-            if (WORD_PREV == WORD[word_num]) {
-                if (word_num % 2 == 0) {
-                    word_num -= getRandom(1, 2);
-                    word_num = (word_num < 0) ? 3 : word_num;
-                } else {
-                    word_num += getRandom(1, 2);
-                    word_num = (word_num > 3) ? 0 : word_num;
-                }
-            }
-            COLOR_PREV = COLOR[color_num];
-            WORD_PREV = WORD[word_num];
-            CURRENT_QUESTION_NUM = color_num;
-            return [COLOR[color_num], WORD[word_num]];
-        }
-
-        function getMode3Question() {
-            [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
-            if (COLOR_PREV == COLOR[color_num]) {
-                if (color_num % 2 == 0) {
-                    color_num += getRandom(1, 2);
-                    color_num = (color_num > 3) ? 0 : color_num;
-                } else {
-                    color_num -= getRandom(1, 2);
-                    color_num = (color_num < 0) ? 3 : color_num;
-                }
-            }
-            if (WORD_PREV == WORD[word_num]) {
-                if (word_num % 2 == 0) {
-                    word_num -= getRandom(1, 2);
-                    word_num = (word_num < 0) ? 3 : word_num;
-                } else {
-                    word_num += getRandom(1, 2);
-                    word_num = (word_num > 3) ? 0 : word_num;
-                }
-            }
-            COLOR_PREV = COLOR[color_num];
-            WORD_PREV = WORD2[word_num];
-            CURRENT_QUESTION_NUM = color_num;
-            return [COLOR[color_num], WORD2[word_num]];
-        }
-
-        function show() {
-            let [color, word] = [];
-            switch (CURRENT_MODDE) {
-                case 1:
-                    [color, word] = getMode1Question();
-                    break;
-                case 2:
-                    [color, word] = getMode2Question();
-                    break;
-                case 3:
-                    [color, word] = getMode3Question();
-                    break;
-            }
-            document.getElementById("div-question").innerHTML = `
-                <span id="color-question" class="${color}-text">
-                ${word}
-                </span>
-            `;
-        }
-
-        //------------------------點擊答案，計算分數並顯示新題目------------------------
-        function submitAns(x) {
-            score(x, COLOR[CURRENT_QUESTION_NUM]);
-        }
     </script>
 </body>
 

@@ -3,9 +3,10 @@
 }
 
 .btn-large {
-  font-size: 2.5rem;
-  height: 5rem;
-  width: 12vw;
+  font-size: 5vh;
+  padding: 0.5vh 0;
+  width: 15.5vw;
+  height: 9vh;
 }
 
 #startBlock .card-content {

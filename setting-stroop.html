@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="materialize/css/materialize.min.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Stroop</title>
+</head>
+
+<body>
+    <!-- navbar -->
+    <nav class="nav-extended teal">
+        <div class="nav-wrapper">
+            <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
+            <ul class="left">
+                <li><a href="./index-stress.html">壓力測驗</a></li>
+                <li class="active"><a href="./index-stroop.html">Stroop</a></li>
+            </ul>
+        </div>
+        <div class="nav-content teal lighten-1">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="./index-stroop.html">計分板</a></li>
+                <li class="tab"><a href="./stroop.html?mode=1">模式一</a></li>
+                <li class="tab"><a href="./stroop.html?mode=2">模式二</a></li>
+                <li class="tab"><a href="./stroop.html?mode=3">模式三</a></li>
+                <li class="tab right"><a id="btn-download">結束</a></li>
+                <li class="tab right"><a href="./setting-stroop.html">設定</a></li>
+                <li class="tab right"><a href="#modal-register" class="modal-trigger">註冊</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- content -->
+    <div class="container">
+        <div class="card">
+            <div class="row card-content" style="width: 100%;">
+                <form>
+                    <div class="input-field col s6">
+                        <input placeholder="0" id="STROOP_TOTAL_QUESTION_NUM" type="number" class="validate">
+                        <label for="STROOP_TOTAL_QUESTION_NUM">題數設定</label>
+                    </div>
+                </form>
+            </div>
+            <div class="card-action">
+                <a class="btn" onclick="saveSetting()">儲存</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal Structure -->
+    <div id="modal-register" class="modal">
+        <div class="modal-content">
+            <h4>註冊</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="input-name" type="text" class="validate" required />
+                    <label for="input-name">姓名</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="waves-effect waves-green btn btn-flat" onclick="register()">
+                    送出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="materialize/js/materialize.min.js"></script>
+    <script src="main.js"></script>
+    <script src="stroop.js"></script>
+    <script>
+        loadSetting();
+    </script>
+</body>
+
+</html>

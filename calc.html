@@ -8,25 +8,27 @@
   <link rel="stylesheet" href="materialize/css/materialize.min.css" />
   <link rel="stylesheet" href="style.css" />
 
-  <title>心算</title>
+  <title>壓力測驗</title>
 </head>
 
 <body>
   <!-- navbar -->
   <nav class="nav-extended teal">
     <div class="nav-wrapper">
-      <a href="./index.html" class="brand-logo">Home</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#modal-register" class="modal-trigger">註冊</a></li>
-        <li><a id="btn-download">結束</a></li>
+      <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
+      <ul class="left">
+        <li class="active"><a href="./index-stress.html">壓力測驗</a></li>
+        <li><a href="./index-stroop.html">Stroop</a></li>
       </ul>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
-        <li class="tab"><a href="./index.html">首頁</a></li>
+        <li class="tab"><a href="./index-stress.html">計分板</a></li>
         <li class="tab"><a href="./color.html">顏色</a></li>
         <li class="tab"><a href="./calc.html">心算</a></li>
-        <li class="tab"><a href="rest.html">休息</a></li>
+        <li class="tab right"><a id="btn-download">結束</a></li>
+        <li class="tab right"><a href="./setting-stress.html">設定</a></li>
+        <li class="tab right"><a href="#modal-register" class="modal-trigger">註冊</a></li>
       </ul>
     </div>
   </nav>
@@ -109,13 +111,13 @@
 
   <script src="materialize/js/materialize.min.js"></script>
   <script src="main.js"></script>
+  <script src="stress.js"></script>
   <script>
     // https://rankyourbrain.com/mental-math
-    const TOTAL_TIME = 30; // 總時間(s)
-    const QUESTION_TIME = 5; // 每題時間(s)
+    const TOTAL_TIME = localStorage.getItem("STRESS_CALC_TOTAL_TIME"); // 總時間(s)
+    const QUESTION_TIME = localStorage.getItem("STRESS_CALC_QUESTION_TIME"); // 每題時間(s)
     var Q;
     var CURRENT_QUESTION_NUM = 0;
-    var TOTAL_QUESTION // 總題數
     loadJSON('calc.json', function (response) {
       let actual_JSON = JSON.parse(response);
       Q = actual_JSON[0].Q;
@@ -125,7 +127,7 @@
 
     //------------------------顯示題目------------------------
     function show() {
-      CURRENT_QUESTION_NUM = getRandom(0, Q.length - 1);
+      CURRENT_QUESTION_NUM = getRandomNumbers(Array.from(Array(Q.length).keys()), 1);
       let question = Q[CURRENT_QUESTION_NUM].split(",")[0];
       document.getElementById("div-question").innerHTML = `
         <span class="calc-question">${question}</span>
