@@ -113,12 +113,30 @@
     <div id="modal-register" class="modal">
         <div class="modal-content">
             <h4>註冊</h4>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="input-name" type="text" class="validate" required />
-                    <label for="input-name">姓名</label>
+            <form class="col s12" name="form-register">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="input-name" type="text" class="validate" required />
+                        <label for="input-name">姓名</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="test1" type="radio" value="0" checked />
+                                <span>前測</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="input-field col s6">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="test1" type="radio" value="1" />
+                                <span>後測</span>
+                            </label>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </form>
             <div class="modal-footer">
                 <button type="button" class="waves-effect waves-green btn btn-flat" onclick="register()">
                     送出
