@@ -38,35 +38,35 @@ function getRandomNumbers(candidates = [], amount = 0) {
 function download() {
   // 取出目前使用者成績
   let savedUser = localStorage.getItem("savedUser");
-  // 取出歷史紀錄
-  loadJSON("rank.json", function (response) {
-    let data = JSON.parse(response);
 
-    // 將目前使用者成績加入歷史紀錄
-    savedUser = JSON.parse(savedUser);
-    savedUser.forEach((user, index, arr) => {
-      data.push(user);
-    });
+  // 存檔
+  let pom = document.createElement("a");
+  pom.setAttribute(
+    "href",
+    "data:application/json;charset=utf-8," + encodeURIComponent(savedUser)
+  );
+  pom.setAttribute("download", "rank.json");
 
-    data = JSON.stringify(data);
+  if (document.createEvent) {
+    let event = document.createEvent("MouseEvents");
+    event.initEvent("click", true, true);
+    pom.dispatchEvent(event);
+  } else {
+    pom.click();
+  }
+  localStorage.clear();
+}
 
-    // 存檔
-    let pom = document.createElement("a");
-    pom.setAttribute(
-      "href",
-      "data:application/json;charset=utf-8," + encodeURIComponent(data)
-    );
-    pom.setAttribute("download", "rank.json");
-
-    if (document.createEvent) {
-      let event = document.createEvent("MouseEvents");
-      event.initEvent("click", true, true);
-      pom.dispatchEvent(event);
-    } else {
-      pom.click();
-    }
-  });
-  // localStorage.clear();
+function resetLocalStorage() {
+  localStorage.clear();
+  localStorage.setItem("CURRENT_SEQUENCE", -1);
+  localStorage.setItem("STROOP_TOTAL_QUESTION_NUM", 20);
+  localStorage.setItem("STRESS_COLOR_TOTAL_TIME", 30);
+  localStorage.setItem("STRESS_COLOR_QUESTION_TIME", 3);
+  localStorage.setItem("STRESS_CALC_TOTAL_TIME", 30);
+  localStorage.setItem("STRESS_CALC_QUESTION_TIME", 5);
+  localStorage.setItem("STRESS_REST_TIME", 30);
+  localStorage.setItem("STRESS_STOP_TIME", 20);
 }
 
 /**

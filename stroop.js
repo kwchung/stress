@@ -262,5 +262,6 @@ function saveSetting() {
     "STROOP_TOTAL_QUESTION_NUM",
     el_STROOP_TOTAL_QUESTION_NUM.value
   );
-  window.location.href = "./index-stroop.html";
+  M.toast({ html: "儲存成功!" });
+  // window.location.href = "./index-stroop.html";
 }

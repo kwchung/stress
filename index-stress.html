@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="materialize/css/materialize.min.css" />
     <link rel="stylesheet" href="style.css" />
 
@@ -16,9 +17,10 @@
     <nav class="nav-extended teal">
         <div class="nav-wrapper">
             <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
-            <ul class="left">
+            <ul class="left" style="width: 100%;">
                 <li class="active"><a href="./index-stress.html">壓力測驗</a></li>
                 <li><a href="./index-stroop.html">Stroop</a></li>
+                <li class="right"><a onclick="resetLocalStorage()">reset</a></li>
             </ul>
         </div>
         <div class="nav-content">
@@ -40,11 +42,11 @@
                 <form action="#">
                     <div class="file-field input-field">
                         <div class="btn">
-                            <span>File</span>
-                            <input type="file">
+                            <span>上傳檔案</span>
+                            <input type="file" id="input-rank">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" id="input-rank">
+                            <input class="file-path validate" type="text">
                         </div>
                     </div>
                 </form>
@@ -88,31 +90,31 @@
         </div>
     </div>
 
-
     <script src="materialize/js/materialize.min.js"></script>
     <script src="main.js"></script>
     <script src="stress.js"></script>
     <script>
         localStorage.setItem("CURRENT_SEQUENCE", -1);
+
         // ---------------顯示歷史測驗紀錄---------------
-        let inputRank = document.getElementById("input-rank");
-        inputRank.addEventListener("change", function () {
-            file_path = inputRank.value;
-            loadJSON(file_path, function (response) {
-                let actual_JSON = JSON.parse(response);
-                let TR = "";
-                actual_JSON.forEach((user, index, arr) => {
-                    TR += `<tr>
-                  <td>${index + 1}</td>
-                  <td>${user.name}</td>`;
-                    user.scores.forEach(score => {
-                        TR += `<td>${score.trueScore} / ${score.trueScore + score.falseScore}</td>`;
+        let fileReader = new FileReader();
+
+        document.getElementById("input-rank")
+            .addEventListener("change", function (e) {
+                fileReader.onload = function () {
+                    let actual_JSON = JSON.parse(this.result);
+                    let TR = "";
+                    actual_JSON.forEach((user, index, arr) => {
+                        TR += `<tr><td>${index + 1}</td><td>${user.name}</td>`;
+                        user.scores.forEach(score => {
+                            TR += `<td>${score.trueScore} / ${score.trueScore + score.falseScore}</td>`;
+                        });
+                        TR += `<td>${user.testTime}</td></tr>`;
                     });
-                    TR += `<td>${user.testTime}</td></tr>`;
-                });
-                document.getElementById("tbody-rank").innerHTML = TR;
-            });
-        });
+                    document.getElementById("tbody-rank").innerHTML = TR;
+                };
+                fileReader.readAsText(e.target.files[0]);
+            }, false);
     </script>
 </body>
 

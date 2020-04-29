@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="materialize/css/materialize.min.css" />
     <link rel="stylesheet" href="style.css" />
 
@@ -16,9 +17,10 @@
     <nav class="nav-extended teal">
         <div class="nav-wrapper">
             <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
-            <ul class="left">
+            <ul class="left" style="width: 100%;">
                 <li><a href="./index-stress.html">壓力測驗</a></li>
                 <li class="active"><a href="./index-stroop.html">Stroop</a></li>
+                <li class="right"><a onclick="resetLocalStorage()">reset</a></li>
             </ul>
         </div>
         <div class="nav-content teal lighten-1">
