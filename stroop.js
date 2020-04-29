@@ -25,7 +25,6 @@ el_inputName.addEventListener("keypress", function (e) {
 function setCurrentMode(mode) {
   localStorage.setItem("CURRENT_MODE", mode);
   window.location.href = "./stroop.html";
-  // window.location.replace("./stroop.html");
 }
 
 function showH3() {
@@ -155,10 +154,13 @@ function register() {
   if (el_inputName.value === "") {
     return false;
   } else {
+    var formReg = document.forms["form-register"];
+
     localStorage.setItem(
       "currentUser",
       JSON.stringify({
-        name: el_inputName.value,
+        name: formReg.elements["input-name"].value,
+        isPreTest: Boolean(formReg.elements["test1"].value),
         scores: [],
         testTime: new Date().toLocaleString(),
       })
@@ -263,5 +265,4 @@ function saveSetting() {
     el_STROOP_TOTAL_QUESTION_NUM.value
   );
   M.toast({ html: "儲存成功!" });
-  // window.location.href = "./index-stroop.html";
 }

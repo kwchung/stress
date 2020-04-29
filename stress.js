@@ -277,5 +277,4 @@ function saveSetting() {
   localStorage.setItem("STRESS_REST_TIME", el_STRESS_REST_TIME.value);
   localStorage.setItem("STRESS_STOP_TIME", el_STRESS_STOP_TIME.value);
   M.toast({ html: "儲存成功!" });
-  // window.location.href = "./index-stress.html";
 }

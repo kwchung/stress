@@ -16,7 +16,6 @@
     <!-- navbar -->
     <nav class="nav-extended teal">
         <div class="nav-wrapper">
-            <!-- <a href="./index.html" class="brand-logo left">Home</a> -->
             <ul class="left" style="width: 100%;">
                 <li><a href="./index-stress.html">壓力測驗</a></li>
                 <li class="active"><a href="./index-stroop.html">Stroop</a></li>
@@ -76,12 +75,30 @@
     <div id="modal-register" class="modal">
         <div class="modal-content">
             <h4>註冊</h4>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="input-name" type="text" class="validate" required />
-                    <label for="input-name">姓名</label>
+            <form class="col s12" name="form-register">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="input-name" type="text" class="validate" required />
+                        <label for="input-name">姓名</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="test1" type="radio" value="0" checked />
+                                <span>前測</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="input-field col s6">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="test1" type="radio" value="1" />
+                                <span>後測</span>
+                            </label>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </form>
             <div class="modal-footer">
                 <button type="button" class="waves-effect waves-green btn btn-flat" onclick="register()">
                     送出
@@ -109,7 +126,7 @@
                         user.scores.forEach(score => {
                             TR += `<td>${score.spendTime}秒/${score.trueScore}題</td>`;
                         });
-                        TR += `<td>${user.testTime}</td></tr>`;
+                        TR += `<td>${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
                     });
                     document.getElementById("tbody-rank").innerHTML = TR;
                 };
