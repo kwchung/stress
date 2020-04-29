@@ -4,7 +4,7 @@
 
 # Locally Useage
 
-## Requirment
+## Requirement
 
 - Node.js >= 8.2.0
 - npm >= 5.2.0
@@ -13,14 +13,13 @@
 
 ## Run Project
 
-1. 先準備好 `rank.json` 檔，內容為空陣列：
-   ```
-   []
-   ```
-2. 開啟命令提示字元，輸入 `npx serve .`
-3. 開啟 `http://localhost:5000`
+1. 開啟命令提示字元，輸入 `npx serve .`
+2. 開啟 `http://localhost:5000`
 
 # User Guide
+
+1. [壓力測驗](##壓力測驗)
+2. [Stroop](##Stroop)
 
 ## 壓力測驗
 
@@ -72,3 +71,5 @@
 
 點選右上角「設定」，調整stroop測驗的參數
 ![stroop設定](assets/stroop_setting.png)
+
+完成所有測試後再點選右上角「結束」按鈕會下載本次測驗所有受測者的成績。
