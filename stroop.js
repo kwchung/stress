@@ -95,8 +95,8 @@ function start() {
   document.getElementById("questionBlock").style.display = "block";
 }
 
-var trueScore = 0;
-var falseScore = 0;
+var failNumArray = [];
+var failNum = 0;
 /**
  * 計算得分
  * @param x
@@ -104,13 +104,16 @@ var falseScore = 0;
  */
 function score(x, y) {
   if (x == y) {
-    trueScore += 1;
     STROOP_TOTAL_QUESTION_NUM -= 1;
     if (STROOP_TOTAL_QUESTION_NUM) {
+      failNumArray.push(failNum);
+      failNum = 0;
       show();
     } else {
       finish("stroop");
     }
+  } else {
+    failNum += 1;
   }
 }
 
@@ -126,9 +129,9 @@ function finish(type) {
   document.getElementById("questionBlock").style.display = "none";
   document.getElementById("resultBlock").style.display = "block";
   document.getElementById("result").innerHTML = `
-    ${trueScore} / ${trueScore + falseScore}
+    共失誤 ${failNumArray.reduce((a, b) => a + b)} 次
     <br>
-    ${spendTime} sec
+    花費 ${spendTime} 秒
   `;
 
   if (localStorage.getItem("currentUser") !== null) {
@@ -138,8 +141,8 @@ function finish(type) {
     currentUser.scores.push({
       mode: localStorage.getItem("CURRENT_MODE"),
       type: type,
-      trueScore: trueScore,
-      falseScore: falseScore,
+      questionNum: localStorage.getItem("STROOP_TOTAL_QUESTION_NUM"),
+      failNumArray: failNumArray,
       endTime: new Date().toLocaleString(),
       spendTime: spendTime,
     });
@@ -168,6 +171,7 @@ function register() {
     let current_sequence = 0;
     localStorage.setItem("CURRENT_SEQUENCE", current_sequence);
     registerModalInstance.close();
+    window.location.href = "./inddex-stroop.html";
   }
 }
 

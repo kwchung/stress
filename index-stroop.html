@@ -55,12 +55,15 @@
                         <table class="striped centered">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>姓名</th>
-                                    <th>模式1</th>
-                                    <th>模式2</th>
-                                    <th>模式3</th>
-                                    <th>時間</th>
+                                    <th rowspan="2">#</th>
+                                    <th rowspan="2">姓名</th>
+                                    <th>模式一</th>
+                                    <th>模式二</th>
+                                    <th>模式三</th>
+                                    <th rowspan="2">時間</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3">(總花費秒數｜總失誤次數｜總題數)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-rank"></tbody>
@@ -116,22 +119,22 @@
         // ---------------顯示歷史測驗紀錄---------------
         let fileReader = new FileReader();
 
-        document.getElementById("input-rank")
-            .addEventListener("change", function (e) {
-                fileReader.onload = function () {
-                    let actual_JSON = JSON.parse(this.result);
-                    let TR = "";
-                    actual_JSON.forEach((user, index, arr) => {
-                        TR += `<tr><td>${index + 1}</td><td>${user.name}</td>`;
-                        user.scores.forEach(score => {
-                            TR += `<td>${score.spendTime}秒/${score.trueScore}題</td>`;
-                        });
-                        TR += `<td>${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
+        let inputRank = document.getElementById("input-rank");
+        inputRank.addEventListener("change", function (e) {
+            fileReader.onload = function () {
+                let actual_JSON = JSON.parse(this.result);
+                let TR = "";
+                actual_JSON.forEach((user, index, arr) => {
+                    TR += `<tr><td>${index + 1}</td><td>${user.name}</td>`;
+                    user.scores.forEach(score => {
+                        TR += `<td>${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum}</td>`;
                     });
-                    document.getElementById("tbody-rank").innerHTML = TR;
-                };
-                fileReader.readAsText(e.target.files[0]);
-            }, false);
+                    TR += `<td>${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
+                });
+                document.getElementById("tbody-rank").innerHTML = TR;
+            };
+            fileReader.readAsText(e.target.files[0]);
+        }, false);
     </script>
 </body>
 
