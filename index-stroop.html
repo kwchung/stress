@@ -28,6 +28,8 @@
                 <li class="tab"><a href="./stroop.html?mode=1">模式一</a></li>
                 <li class="tab"><a href="./stroop.html?mode=2">模式二</a></li>
                 <li class="tab"><a href="./stroop.html?mode=3">模式三</a></li>
+                <li class="tab"><a href="./stroop.html?mode=4">模式四</a></li>
+                <li class="tab"><a href="./stroop.html?mode=5">模式五</a></li>
                 <li class="tab right"><a id="btn-download">結束</a></li>
                 <li class="tab right"><a href="setting-stroop.html">設定</a></li>
                 <li class="tab right"><a href="#modal-register" class="modal-trigger">註冊</a></li>
@@ -60,10 +62,12 @@
                                     <th>模式一</th>
                                     <th>模式二</th>
                                     <th>模式三</th>
+                                    <th>模式四</th>
+                                    <th>模式四</th>
                                     <th rowspan="2">時間</th>
                                 </tr>
                                 <tr>
-                                    <th colspan="3">(總花費秒數｜總失誤次數｜總題數)</th>
+                                    <th colspan="5">(總花費秒數｜總失誤次數｜總題數)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-rank"></tbody>
@@ -114,6 +118,7 @@
     <script src="main.js"></script>
     <script src="stroop.js"></script>
     <script>
+        let TEST_MODE = 5;
         localStorage.setItem("CURRENT_SEQUENCE", -1);
 
         // ---------------顯示歷史測驗紀錄---------------
@@ -125,11 +130,12 @@
                 let actual_JSON = JSON.parse(this.result);
                 let TR = "";
                 actual_JSON.forEach((user, index, arr) => {
-                    TR += `<tr><td>${index + 1}</td><td>${user.name}</td>`;
+                    TR += `<tr><td>${index + 1}</td><td style="max-width:90px;">${user.name}</td>`;
                     user.scores.forEach(score => {
-                        TR += `<td>${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum}</td>`;
+                        TR += `<td class="td-mode">${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum}</td>`;
                     });
-                    TR += `<td>${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
+                    TR += "<td class='td-mode'></td>".repeat(TEST_MODE - user.scores.length)
+                    TR += `<td style="max-width:120px;">${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
                 });
                 document.getElementById("tbody-rank").innerHTML = TR;
             };

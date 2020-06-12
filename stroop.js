@@ -43,6 +43,9 @@ function showH3() {
       case 3:
         content = "模式三";
         break;
+      case 4:
+        content = "模式四";
+        break;
     }
   }
   document.getElementById("h3-show").innerHTML = content;
@@ -183,6 +186,19 @@ var WORD2_PREV = "";
 function getMode1Question() {
   while (true) {
     [q_num] = getRandomNumbers([0, 1, 2, 3], 1);
+    if (WORD_PREV != WORD[q_num]) {
+      break;
+    }
+  }
+
+  WORD_PREV = WORD[q_num];
+  CURRENT_QUESTION_NUM = q_num;
+  return ["balck", WORD[q_num]];
+}
+
+function getMode2Question() {
+  while (true) {
+    [q_num] = getRandomNumbers([0, 1, 2, 3], 1);
     if (COLOR_PREV != COLOR[q_num] && WORD_PREV != WORD[q_num]) {
       break;
     }
@@ -194,7 +210,20 @@ function getMode1Question() {
   return [COLOR[q_num], WORD[q_num]];
 }
 
-function getMode2Question() {
+function getMode3Question() {
+  while (true) {
+    [q_num] = getRandomNumbers([0, 1, 2, 3], 1);
+    if (COLOR_PREV != COLOR[q_num]) {
+      break;
+    }
+  }
+
+  COLOR_PREV = COLOR[q_num];
+  CURRENT_QUESTION_NUM = q_num;
+  return [COLOR[q_num], ""];
+}
+
+function getMode4Question() {
   while (true) {
     [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
     if (COLOR_PREV != COLOR[color_num] && WORD_PREV != WORD[word_num]) {
@@ -208,7 +237,7 @@ function getMode2Question() {
   return [COLOR[color_num], WORD[word_num]];
 }
 
-function getMode3Question() {
+function getMode5Question() {
   while (true) {
     [color_num, word_num] = getRandomNumbers([0, 1, 2, 3], 2);
     if (COLOR_PREV != COLOR[color_num] && WORD2_PREV != WORD2[word_num]) {
@@ -224,6 +253,11 @@ function getMode3Question() {
 
 function show() {
   let [color, word] = [];
+  let innerHTML = `
+    <span id="color-question" class="${color}-text">
+      ${word}
+    </span>
+  `;
   switch (parseInt(localStorage.getItem("CURRENT_MODE"))) {
     case 1:
       [color, word] = getMode1Question();
@@ -233,14 +267,23 @@ function show() {
       break;
     case 3:
       [color, word] = getMode3Question();
+      innerHTML = `<div class="row">
+                      <div class="col offset-s4 s4">
+                        <div class="card ${color}">
+                          <div class="card-content" style="height: 40vh;"></div>
+                        </div>
+                      </div>
+                    </div>`;
+      break;
+    case 4:
+      [color, word] = getMode4Question();
+      break;
+    case 5:
+      [color, word] = getMode5Question();
       break;
   }
 
-  document.getElementById("div-question").innerHTML = `
-    <span id="color-question" class="${color}-text">
-      ${word}
-    </span>
-  `;
+  document.getElementById("div-question").innerHTML = innerHTML;
 }
 
 //------------------------點擊答案，計算分數並顯示新題目------------------------

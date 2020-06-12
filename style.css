@@ -25,3 +25,7 @@
 .card-panel {
   padding: 0px;
 }
+
+.stroop-td-mode {
+  max-width: 80px;
+}
