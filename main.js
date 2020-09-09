@@ -60,6 +60,7 @@ function download() {
 function resetLocalStorage() {
   localStorage.clear();
   localStorage.setItem("CURRENT_SEQUENCE", -1);
+  localStorage.setItem("CURRENT_MODE", 1);
   localStorage.setItem("STROOP_TOTAL_QUESTION_NUM", 20);
   localStorage.setItem("STRESS_COLOR_TOTAL_TIME", 30);
   localStorage.setItem("STRESS_COLOR_QUESTION_TIME", 3);

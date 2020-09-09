@@ -175,8 +175,8 @@ function register() {
         testTime: new Date().toLocaleString(),
       })
     );
-    let current_sequence = 0;
-    localStorage.setItem("CURRENT_SEQUENCE", current_sequence);
+    localStorage.setItem("CURRENT_SEQUENCE", 0);
+    localStorage.setItem("CURRENT_MODE", 1);
     registerModalInstance.close();
     window.location.href = "./stroop.html";
   }
@@ -294,6 +294,7 @@ function show() {
     `;
     document.getElementById("div-question").innerHTML = innerHTML;
   }
+  console.log(color, word);
 }
 
 //------------------------點擊答案，計算分數並顯示新題目------------------------
