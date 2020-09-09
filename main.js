@@ -54,7 +54,7 @@ function download() {
   } else {
     pom.click();
   }
-  localStorage.clear();
+  // localStorage.clear();
 }
 
 function resetLocalStorage() {
