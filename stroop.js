@@ -193,7 +193,7 @@ function getMode1Question() {
 
   WORD_PREV = WORD[q_num];
   CURRENT_QUESTION_NUM = q_num;
-  return ["balck", WORD[q_num]];
+  return ["black", WORD[q_num]];
 }
 
 function getMode2Question() {
@@ -253,27 +253,14 @@ function getMode5Question() {
 
 function show() {
   let [color, word] = [];
-  let innerHTML = `
-    <span id="color-question" class="${color}-text">
-      ${word}
-    </span>
-  `;
+  let innerHTML = "";
+
   switch (parseInt(localStorage.getItem("CURRENT_MODE"))) {
     case 1:
       [color, word] = getMode1Question();
       break;
     case 2:
       [color, word] = getMode2Question();
-      break;
-    case 3:
-      [color, word] = getMode3Question();
-      innerHTML = `<div class="row">
-                      <div class="col offset-s4 s4">
-                        <div class="card ${color}">
-                          <div class="card-content" style="height: 40vh;"></div>
-                        </div>
-                      </div>
-                    </div>`;
       break;
     case 4:
       [color, word] = getMode4Question();
@@ -282,8 +269,27 @@ function show() {
       [color, word] = getMode5Question();
       break;
   }
+  innerHTML = `
+    <span id="color-question" class="${color}-text">
+      ${word}
+    </span>
+  `;
 
   document.getElementById("div-question").innerHTML = innerHTML;
+
+  if (parseInt(localStorage.getItem("CURRENT_MODE")) === 3) {
+    [color, word] = getMode3Question();
+    innerHTML = `
+      <div class="row">
+        <div class="col offset-s4 s4">
+          <div class="card ${color}">
+            <div class="card-content" style="height: 40vh;"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById("div-question").innerHTML = innerHTML;
+  }
 }
 
 //------------------------點擊答案，計算分數並顯示新題目------------------------
