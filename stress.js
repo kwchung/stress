@@ -16,7 +16,6 @@ let goSaveUser = function () {
   let currentUser = localStorage.getItem("currentUser");
   currentUser = JSON.parse(currentUser);
   savedUser.push(currentUser);
-  console.log(savedUser);
   localStorage.setItem("savedUser", JSON.stringify(savedUser));
   localStorage.setItem("CURRENT_SEQUENCE", -1);
   localStorage.setItem("currentUser", JSON.stringify({}));

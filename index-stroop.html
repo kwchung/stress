@@ -131,15 +131,22 @@
                 let actual_JSON = JSON.parse(this.result);
                 let TR = "";
                 actual_JSON.forEach((user, index, arr) => {
-                    if (user == null) {
-                        return;
+                    if (user) {
+                        if (Object.keys(user).length === 0 && user.constructor === Object) {
+                            return;
+                        }
+                        TR += `<tr><td>${index + 1}</td><td style="max-width:90px;">${user.name}</td>`;
+                        if (user.scores) {
+                            user.scores.forEach(score => {
+                                TR += `<td class="td-mode">(${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum})</td>`;
+                            });
+                            TR += "<td class='td-mode'></td>".repeat(TEST_MODE - user.scores.length)
+                        }
+                        else {
+                            TR += "<td class='td-mode'></td>".repeat(TEST_MODE)
+                        }
+                        TR += `<td style="max-width:120px;">${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
                     }
-                    TR += `<tr><td>${index + 1}</td><td style="max-width:90px;">${user.name}</td>`;
-                    user.scores.forEach(score => {
-                        TR += `<td class="td-mode">(${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum})</td>`;
-                    });
-                    TR += "<td class='td-mode'></td>".repeat(TEST_MODE - user.scores.length)
-                    TR += `<td style="max-width:120px;">${user.testTime} <span class="new badge ${user.isPreTest ? "red" : "blue"}" data-badge-caption="">${user.isPreTest ? "前測" : "後測"}</span></td></tr>`;
                 });
                 document.getElementById("tbody-rank").innerHTML = TR;
             };
