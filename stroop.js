@@ -46,6 +46,9 @@ function showH3() {
       case 4:
         content = "模式四";
         break;
+      case 5:
+        content = "模式五";
+        break;
     }
   }
   document.getElementById("h3-show").innerHTML = content;
@@ -83,6 +86,7 @@ function goSaveUser() {
   console.log(savedUser);
   localStorage.setItem("savedUser", JSON.stringify(savedUser));
   localStorage.setItem("CURRENT_SEQUENCE", -1);
+  localStorage.setItem("CURRENT_MODE", 1);
   localStorage.setItem("currentUser", JSON.stringify({}));
   window.location.href = "./index-stroop.html";
 }
@@ -174,7 +178,7 @@ function register() {
     let current_sequence = 0;
     localStorage.setItem("CURRENT_SEQUENCE", current_sequence);
     registerModalInstance.close();
-    window.location.href = "./inddex-stroop.html";
+    window.location.href = "./stroop.html";
   }
 }
 
