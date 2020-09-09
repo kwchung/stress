@@ -64,7 +64,7 @@
                                     <th>模式二</th>
                                     <th>模式三</th>
                                     <th>模式四</th>
-                                    <th>模式四</th>
+                                    <th>模式五</th>
                                     <th rowspan="2">時間</th>
                                 </tr>
                                 <tr>
@@ -131,6 +131,9 @@
                 let actual_JSON = JSON.parse(this.result);
                 let TR = "";
                 actual_JSON.forEach((user, index, arr) => {
+                    if (user == null) {
+                        return;
+                    }
                     TR += `<tr><td>${index + 1}</td><td style="max-width:90px;">${user.name}</td>`;
                     user.scores.forEach(score => {
                         TR += `<td class="td-mode">(${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum})</td>`;
