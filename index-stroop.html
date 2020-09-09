@@ -130,12 +130,14 @@
             fileReader.onload = function () {
                 let actual_JSON = JSON.parse(this.result);
                 let TR = "";
+                let ind = 0;
                 actual_JSON.forEach((user, index, arr) => {
                     if (user) {
                         if (Object.keys(user).length === 0 && user.constructor === Object) {
                             return;
                         }
-                        TR += `<tr><td>${index + 1}</td><td style="max-width:90px;">${user.name}</td>`;
+                        ind += 1;
+                        TR += `<tr><td>${ind}</td><td style="max-width:90px;">${user.name}</td>`;
                         if (user.scores) {
                             user.scores.forEach(score => {
                                 TR += `<td class="td-mode">(${score.spendTime} | ${score.failNumArray.reduce((a, b) => a + b)} | ${score.questionNum})</td>`;
